@@ -1,0 +1,22 @@
+name: 'New Tagged Release'
+description: 'Creates a new tagged release based on a .csproj version'
+author: 'Jeff Patton'
+
+branding:
+  icon: 'activity'
+  color: 'blue'
+
+inputs:
+  source_path:
+    description: 'Relative path to the subfolder containing the .csproj file'
+    required: true
+    default: '.'
+
+  project_name:
+    description: 'Name of the project (used in .csproj and git tag)'
+    required: true
+
+runs:
+  using: 'python'
+  main: 'newtaggedrelease.py'
+

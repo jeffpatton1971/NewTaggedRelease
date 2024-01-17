@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[0.0.2.12]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.12) - 2024-01-17
+
+This release fixes the boolean to string issue. PowerShell is casting booleans to strings during the ConvertTo-Json cmdlet, this is causing the GitHub API to throw a 422 error. There were several iterations in an attempt to programatically fix this, but the solution was to simply write the JSON string out manually.
+
+What's Changed
+
+1. Added code to manually construct the json string
+
+---
+
 ## [[0.0.2.3]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.3) - 2024-01-17
 
 This release adds some features, you can now set the body of the release, as well as whether or not it's a pre-release and if you want the auto-generated release notes to be added.

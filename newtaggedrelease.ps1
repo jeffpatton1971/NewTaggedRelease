@@ -64,18 +64,20 @@ try
   'Content-Type' = 'application/json'
  }
 
- $payload = @{
-  "tag_name"               = $Version
-  "name"                   = $Name
-  "generate_release_notes" = $ReleaseNotes
- }
-
- $jsonPayload = '{"tag_name":"' + $Version + '","name":"' + $Name + '","generate_release_notes":True}'
+ $jsonPayload = '{"tag_name":"' + $Version
+ $jsonPayload += '","name":"' + $Name
+ $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
+ $jsonPayload += '","prerelease":' + $PreRelease.ToString().ToLower()
+ $jsonPayload += '"}'
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
   $payload.Add('body', $Body)
-  $jsonPayload = '{"tag_name":"' + $Version + '","name":"' + $Name + '","generate_release_notes":true, "body":"' + $Body + '"}'
+  $jsonPayload = '{"tag_name":"' + $Version
+  $jsonPayload += '","name":"' + $Name
+  $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
+  $jsonPayload += '","prerelease":' + $PreRelease.ToString().ToLower()
+  $jsonPayload += ', "body":"' + $Body + '"}'
  }
 
  if ($verbose.ToLower() -eq 'verbose')

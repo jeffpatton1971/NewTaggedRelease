@@ -61,6 +61,7 @@ try
 
  $headers = @{
   Authorization = "token $($token)"
+  'Content-Type' = 'application/json'
  }
 
  $payload = @{

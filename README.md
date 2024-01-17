@@ -32,7 +32,7 @@ There are a few different ways to use this action; here are a few examples to ge
 ```yaml
 jobs:
   create_release:
-    uses: mod-posh/NewTaggedRelease@v0.0.2.2
+    uses: mod-posh/NewTaggedRelease@v0.0.2.3
     with:
       name: '"Our latest awesome release"'
       version: '"2.0.0"'

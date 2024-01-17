@@ -75,6 +75,11 @@ try
   $payload.Add('body', $Body)
  }
 
+ if ($verbose.ToLower() -eq 'verbose')
+ {
+  $payload |ConvertTo-Json
+ }
+
  Invoke-RestMethod -Uri $apiUrl -Method Post -Body ($payload |ConvertTo-Json -Compress) -Headers $headers
 }
 catch

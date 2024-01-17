@@ -67,15 +67,15 @@ try
  $jsonPayload = '{"tag_name":"' + $Version
  $jsonPayload += '","name":"' + $Name
  $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
- $jsonPayload += '","prerelease":' + $PreRelease.ToString().ToLower()
- $jsonPayload += '"}'
+ $jsonPayload += ',"prerelease":' + $PreRelease.ToString().ToLower()
+ $jsonPayload += '}'
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
   $jsonPayload = '{"tag_name":"' + $Version
   $jsonPayload += '","name":"' + $Name
   $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
-  $jsonPayload += '","prerelease":' + $PreRelease.ToString().ToLower()
+  $jsonPayload += ',"prerelease":' + $PreRelease.ToString().ToLower()
   $jsonPayload += ', "body":"' + $Body + '"}'
  }
 

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[0.0.2.13]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.13) - 2024-01-17
+
+BUGFIX: Removed the extraneous hashtable update as we're no longer using hashtables.
+
+---
+
 ## [[0.0.2.12]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.12) - 2024-01-17
 
 This release fixes the boolean to string issue. PowerShell is casting booleans to strings during the ConvertTo-Json cmdlet, this is causing the GitHub API to throw a 422 error. There were several iterations in an attempt to programatically fix this, but the solution was to simply write the JSON string out manually.

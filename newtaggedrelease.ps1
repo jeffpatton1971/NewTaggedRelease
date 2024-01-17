@@ -72,7 +72,6 @@ try
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
-  $payload.Add('body', $Body)
   $jsonPayload = '{"tag_name":"' + $Version
   $jsonPayload += '","name":"' + $Name
   $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()

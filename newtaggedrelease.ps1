@@ -10,23 +10,6 @@ try
  $ErrorActionPreference = 'Stop';
  $Error.Clear();
 
- Add-Type -TypeDefinition @"
-using System;
-using System.Text.Json;
-
-public class JsonConverter
-{
-    public static string ConvertToCustomJson(System.Collections.Hashtable hash)
-    {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = false,
-        };
-        return JsonSerializer.Serialize(hash, options);
-    }
-}
-"@
-
  $repository = $env:GITHUB_REPOSITORY
  $runnerPath = $env:GITHUB_WORKSPACE
  $repoName = $repository.Split('/')[1]
@@ -87,11 +70,12 @@ public class JsonConverter
   "generate_release_notes" = $ReleaseNotes
  }
 
- $jsonPayload = [JsonConverter]::ConvertToCustomJson($payload)
+ $jsonPayload = '{"tag_name":"' + $Version + '","name":"' + $Name + '","generate_release_notes":True}'
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
   $payload.Add('body', $Body)
+  $jsonPayload = '{"tag_name":"' + $Version + '","name":"' + $Name + '","generate_release_notes":true, "body":"' + $Body + '"}'
  }
 
  if ($verbose.ToLower() -eq 'verbose')

@@ -2,40 +2,44 @@
 
 ## Overview
 
-This reusable GitHub Actions workflow automates the process of creating a new release for a .NET project based on the version specified in the `.csproj` file. It checks out the repository, sets up Python, installs necessary dependencies (`gitpython` and `requests`), and then runs a Python script to perform the release process.
+The `NewTaggedRelease` GitHub Action is designed to create a GitHub release automatically for you.
 
-### Inputs
+## Workflow File
 
-- `source_path`: The relative path to the subfolder containing the `.csproj` file.
-- `project_name`: The name of the project, which should match the name used in the `.csproj` file.
+You can trigger the `action.yml` by `workflow_call` to create the release automatically. The workflow contains several steps to act:
 
-## Using the Workflow
+1. Checkout the repository
+2. Call the `newtaggedrelease.ps1` script
 
-To use this workflow in your project, you can call it from another workflow file in your repository. Here's an example of how to do it:
+### Workflow Inputs
+
+- `name`: This is the name of the release, if empty, this is set to version
+- `version`: This is the version
+- `verbose`: A value of verbose will output additional information. This input is not required.
+- `github_token`: This is the built-in Github Token; this is passed as an environment variable. This input is required.
+
+## PowerShell Script (`newtaggedrelease.ps1`)
+
+The PowerShell script uses the GitHub API to create a release. It parses the project file to determine the version number; this is then assigned to the tag_name and name property of the release.
+
+## Usage
+
+There are a few different ways to use this action; here are a few examples to get you started.
 
 ```yaml
 jobs:
-  call-release-workflow:
-    uses: jeffpatton1971/NewTaggedrelease@v0.0.1.0
+  create_release:
+    uses: mod-posh/NewTaggedRelease@v0.0.2.0
     with:
-      source_path: 'path/to/subfolder'
-      project_name: 'YourProjectName'
+      name: '"Our latest awesome release"'
+      version: '"2.0.0"'
+      verbose: 'verbose'
+      github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-## Python Script: `newtaggedrelease.py`
-
-The `newtaggedrelease.py` script automates the process of creating a new Git tag and GitHub release for a .NET project. It reads the version from the `.csproj` file, commits any changes, tags the commit, pushes the tag to the repository, and creates a new release on GitHub.
-
-### Usage
-
-The script is designed to be run with two arguments:
-
-- `source_path`: Path to the folder containing the `.csproj` file.
-- `project_name`: Name of the .NET project.
-
-### Execution
-
-The script is executed as part of the GitHub Actions workflow and requires the `GITHUB_TOKEN` and `GITHUB_REPOSITORY` environment variables to be set, which is handled automatically by the workflow.
+> [!Note]
+> This example is used directly as part of a larger workflow
+> The verbose option will output a little more detail in the logs
 
 ## License
 

@@ -1,5 +1,5 @@
-name: 'New Tagged Release'
-description: 'Creates a new tagged release based on a .csproj version'
+name: 'NewTaggedRelease'
+description: 'Creates a new tagged release'
 author: 'Jeff Patton'
 
 branding:
@@ -7,16 +7,33 @@ branding:
   color: 'blue'
 
 inputs:
-  source_path:
-    description: 'Relative path to the subfolder containing the .csproj file'
+  name:
+    description: 'The name of the release'
+    required: false
+    type: string
+  version:
+    description: 'The version number of the release'
     required: true
-    default: '.'
-
-  project_name:
-    description: 'Name of the project (used in .csproj and git tag)'
+    type: string
+  verbose:
+    description: "A value of verbose will output additional information"
+    required: false
+    type: string
+    default: 'None'
+  github_token:
+    description: 'GitHub token'
     required: true
 
 runs:
-  using: 'python'
-  main: 'newtaggedrelease.py'
+  using: 'composite'
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        VERBOSE: ${{ inputs.verbose }}
+      run: |
+        & $env:GITHUB_ACTION_PATH\\newtaggedrelease.ps1 -Name ${{ inputs.name }} -Version ${{ inputs.version }}
+      shell: pwsh

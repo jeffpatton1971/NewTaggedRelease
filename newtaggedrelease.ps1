@@ -27,7 +27,7 @@ try
 
  if ([string]::IsNullOrEmpty($PreRelease))
  {
-  $PreRelease = $false
+  [bool]$PreRelease = $false
  }
  else
  {
@@ -36,7 +36,7 @@ try
 
  if ([string]::IsNullOrEmpty($ReleaseNotes))
  {
-  $ReleaseNotes = $true
+  [bool]$ReleaseNotes = $true
  }
  else
  {
@@ -67,8 +67,8 @@ try
  $payload = @{
   "tag_name"               = $Version
   "name"                   = $Name
-  "prerelease"             = $PreRelease
-  "generate_release_notes" = $ReleaseNotes
+  "prerelease"             = $PreRelease.ToString().ToLowerInvariant()
+  "generate_release_notes" = $ReleaseNotes.ToString().ToLowerInvariant()
  }
 
  if (!([string]::IsNullOrEmpty($Body)))

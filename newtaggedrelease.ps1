@@ -10,6 +10,23 @@ try
  $ErrorActionPreference = 'Stop';
  $Error.Clear();
 
+ Add-Type -TypeDefinition @"
+using System;
+using System.Text.Json;
+
+public class JsonConverter
+{
+    public static string ConvertToCustomJson(System.Collections.Hashtable hash)
+    {
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = false,
+        };
+        return JsonSerializer.Serialize(hash, options);
+    }
+}
+"@
+
  $repository = $env:GITHUB_REPOSITORY
  $runnerPath = $env:GITHUB_WORKSPACE
  $repoName = $repository.Split('/')[1]
@@ -60,7 +77,7 @@ try
  }
 
  $headers = @{
-  Authorization = "token $($token)"
+  Authorization  = "token $($token)"
   'Content-Type' = 'application/json'
  }
 
@@ -70,6 +87,8 @@ try
   "generate_release_notes" = $ReleaseNotes
  }
 
+ $jsonPayload = [JsonConverter]::ConvertToCustomJson($payload)
+
  if (!([string]::IsNullOrEmpty($Body)))
  {
   $payload.Add('body', $Body)
@@ -77,10 +96,10 @@ try
 
  if ($verbose.ToLower() -eq 'verbose')
  {
-  $payload |ConvertTo-Json
+  $jsonPayload
  }
 
- Invoke-RestMethod -Uri $apiUrl -Method Post -Body ($payload |ConvertTo-Json -Compress) -Headers $headers
+ Invoke-RestMethod -Uri $apiUrl -Method Post -Body $jsonPayload -Headers $headers
 }
 catch
 {

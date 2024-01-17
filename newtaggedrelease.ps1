@@ -71,6 +71,7 @@ try
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
+  $payload.Add('body', $Body)
  }
 
  if ($verbose.ToLower() -eq 'verbose')

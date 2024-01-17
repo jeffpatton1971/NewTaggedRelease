@@ -1,6 +1,9 @@
 param (
  [string]$Name,
- [string]$Version
+ [string]$Version,
+ [string]$Body,
+ [string]$PreRelease,
+ [string]$ReleaseNotes
 )
 try
 {
@@ -22,29 +25,57 @@ try
   $Name = $Version
  }
 
+ if ([string]::IsNullOrEmpty($PreRelease))
+ {
+  $PreRelease = $false
+ }
+ else
+ {
+  $PreRelease = [System.Convert]::ToBoolean($PreRelease)
+ }
+
+ if ([string]::IsNullOrEmpty($ReleaseNotes))
+ {
+  $ReleaseNotes = $true
+ }
+ else
+ {
+  $ReleaseNotes = [System.Convert]::ToBoolean($ReleaseNotes)
+ }
+
  if ($verbose.ToLower() -eq 'verbose')
  {
   Write-Host "NewTaggedRelease DEBUG"
-  Write-Host "FileName   : $($FileName)"
-  Write-Host "Name       : $($Name)"
-  Write-Host "Version    : $($Version)"
-  Write-Host "Repository : $($repository)"
-  Write-Host "RunnerPath : $($runnerPath)"
-  Write-Host "RepoName   : $($repoName)"
-  Write-Host "SourcePath : $($sourcePath)"
-  Write-Host "ApiUrl     : $($apiUrl)"
+  Write-Host "FileName     : $($FileName)"
+  Write-Host "Name         : $($Name)"
+  Write-Host "Version      : $($Version)"
+  Write-Host "Repository   : $($repository)"
+  Write-Host "RunnerPath   : $($runnerPath)"
+  Write-Host "RepoName     : $($repoName)"
+  Write-Host "SourcePath   : $($sourcePath)"
+  Write-Host "ApiUrl       : $($apiUrl)"
+  Write-Host "PreRelease   : $($PreRelease)"
+  Write-Host "ReleaseNotes : $($ReleaseNotes)"
+  Write-Host "Body         : $($Body)"
  }
 
  $headers = @{
   Authorization = "token $($token)"
  }
 
- $body = @{
-  "tag_name" = $Version
-  "name"     = $Name
- } | ConvertTo-Json
+ $payload = @{
+  "tag_name"               = $Version
+  "name"                   = $Name
+  "prerelease"             = $PreRelease
+  "generate_release_notes" = $ReleaseNotes
+ }
 
- Invoke-RestMethod -Uri $apiUrl -Method Post -Body $body -Headers $headers
+ if (!([string]::IsNullOrEmpty($Body)))
+ {
+  $payload.Add('body', $Body)
+ }
+
+ Invoke-RestMethod -Uri $apiUrl -Method Post -Body $payload -Headers $headers
 }
 catch
 {

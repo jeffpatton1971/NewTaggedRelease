@@ -15,6 +15,9 @@ You can trigger the `action.yml` by `workflow_call` to create the release automa
 
 - `name`: This is the name of the release, if empty, this is set to version
 - `version`: This is the version
+- `body`: The body of the release
+- `prerelease`: Mark this as a pre-prerelease
+- `releasenotes`: Add the generated releasenotes
 - `verbose`: A value of verbose will output additional information. This input is not required.
 - `github_token`: This is the built-in Github Token; this is passed as an environment variable. This input is required.
 
@@ -29,7 +32,7 @@ There are a few different ways to use this action; here are a few examples to ge
 ```yaml
 jobs:
   create_release:
-    uses: mod-posh/NewTaggedRelease@v0.0.2.0
+    uses: mod-posh/NewTaggedRelease@v0.0.2.1
     with:
       name: '"Our latest awesome release"'
       version: '"2.0.0"'

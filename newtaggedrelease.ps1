@@ -67,7 +67,7 @@ try
  $payload = @{
   "tag_name"               = $Version
   "name"                   = $Name
-  "generate_release_notes" = $ReleaseNotes.ToString().ToLowerInvariant()
+  "generate_release_notes" = $ReleaseNotes
  }
 
  if (!([string]::IsNullOrEmpty($Body)))

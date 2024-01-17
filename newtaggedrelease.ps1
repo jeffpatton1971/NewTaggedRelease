@@ -75,7 +75,7 @@ try
   $payload.Add('body', $Body)
  }
 
- Invoke-RestMethod -Uri $apiUrl -Method Post -Body $payload -Headers $headers
+ Invoke-RestMethod -Uri $apiUrl -Method Post -Body ($payload |ConvertTo-Json -Compress) -Headers $headers
 }
 catch
 {

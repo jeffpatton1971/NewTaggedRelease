@@ -67,13 +67,10 @@ try
  $payload = @{
   "tag_name"               = $Version
   "name"                   = $Name
-  "prerelease"             = $PreRelease.ToString().ToLowerInvariant()
-  "generate_release_notes" = $ReleaseNotes.ToString().ToLowerInvariant()
  }
 
  if (!([string]::IsNullOrEmpty($Body)))
  {
-  $payload.Add('body', $Body)
  }
 
  if ($verbose.ToLower() -eq 'verbose')

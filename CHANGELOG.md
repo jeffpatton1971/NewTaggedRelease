@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[0.0.3.0]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.3.0) - 2024-07-18
+
+Github Env Files I think are [limited](https://docs.github.com/en/actions/learn-github-actions/variables#limits-for-configuration-variables) along with the rest of the variables, which means a simple Release Notes document could exceed the maxium 256KB allowed for all variables in a workflow very quickly. This change will check for the existence of a releasenotes document named using a new parameter, the default will be RELEASE.md (assuming we're using the [NewTaggedRelease](https://github.com/mod-posh/NewTaggedRelease) action ). If the file is not found, the action will automatically generate release notes.
+
+What's Changed:
+
+- Added FileName parameter
+  - Added logic to validate the file exists
+  - If not set GenerateReleseNotes to true
+- Removed ReleaseNotes parameter
+- PreReleaseNotes changed to boolean and default to false
+- Added missing Version parameter
+
+---
+
 ## [[0.0.2.15]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.15) - 2024-07-18
 
 BUGFIX: Body should be a required parameter

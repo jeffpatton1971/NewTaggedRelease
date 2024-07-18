@@ -1,9 +1,9 @@
 param (
  [string]$Name,
  [string]$Version,
- [string]$Body,
- [string]$PreRelease,
- [string]$ReleaseNotes
+ [string]$FileName,
+ [bool]$PreRelease = $false,
+ [string]$Verbose = "None"
 )
 try
 {
@@ -15,7 +15,7 @@ try
  $repoName = $repository.Split('/')[1]
  $sourcePath = Join-Path -Path $runnerPath -ChildPath $repoName
  $token = $env:GITHUB_TOKEN
- $verbose = $env:VERBOSE
+ $verbose = $Verbose
 
  $baseUri = 'https://api.github.com/repos'
  $apiUrl = "$($baseUri)/$($repository)/releases"
@@ -23,24 +23,6 @@ try
  if ([string]::IsNullOrEmpty($Name))
  {
   $Name = $Version
- }
-
- if ([string]::IsNullOrEmpty($PreRelease))
- {
-  [bool]$PreRelease = $false
- }
- else
- {
-  $PreRelease = [System.Convert]::ToBoolean($PreRelease)
- }
-
- if ([string]::IsNullOrEmpty($ReleaseNotes))
- {
-  [bool]$ReleaseNotes = $true
- }
- else
- {
-  $ReleaseNotes = [System.Convert]::ToBoolean($ReleaseNotes)
  }
 
  if ($verbose.ToLower() -eq 'verbose')
@@ -55,8 +37,6 @@ try
   Write-Host "SourcePath   : $($sourcePath)"
   Write-Host "ApiUrl       : $($apiUrl)"
   Write-Host "PreRelease   : $($PreRelease)"
-  Write-Host "ReleaseNotes : $($ReleaseNotes)"
-  Write-Host "Body         : $($Body)"
  }
 
  $headers = @{
@@ -64,30 +44,38 @@ try
   'Content-Type' = 'application/json'
  }
 
- $jsonPayload = '{"tag_name":"' + $Version
- $jsonPayload += '","name":"' + $Name
- $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
- $jsonPayload += ',"prerelease":' + $PreRelease.ToString().ToLower()
- $jsonPayload += '}'
+ $ReleaseNotesPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath $FileName
 
- if (!([string]::IsNullOrEmpty($Body)))
+ if (Test-Path -Path $ReleaseNotesPath)
  {
-  $jsonPayload = '{"tag_name":"' + $Version
-  $jsonPayload += '","name":"' + $Name
-  $jsonPayload += '","generate_release_notes":' + $ReleaseNotes.ToString().ToLower()
-  $jsonPayload += ',"prerelease":' + $PreRelease.ToString().ToLower()
-  $jsonPayload += ', "body":"' + $Body + '"}'
+  $Body = Get-Content -Path $ReleaseNotesPath -Raw
+  $jsonPayload = @{
+   tag_name               = $Version
+   name                   = $Name
+   generate_release_notes = $false
+   prerelease             = $PreRelease
+   body                   = $Body
+  }
+ }
+ else
+ {
+  $jsonPayload = @{
+   tag_name               = $Version
+   name                   = $Name
+   generate_release_notes = $true
+   prerelease             = $PreRelease
+  }
  }
 
  if ($verbose.ToLower() -eq 'verbose')
  {
-  $jsonPayload
+  $jsonPayload | ConvertTo-Json -Depth 10 | Write-Host
  }
 
- Invoke-RestMethod -Uri $apiUrl -Method Post -Body $jsonPayload -Headers $headers
+ Invoke-RestMethod -Uri $apiUrl -Method Post -Body ($jsonPayload | ConvertTo-Json -Depth 10) -Headers $headers
 }
 catch
 {
- $_.InvocationInfo | Out-String;
- throw $_.Exception.Message;
+ $_.InvocationInfo | Out-String
+ throw $_.Exception.Message
 }

@@ -2,7 +2,7 @@ param (
  [string]$Name,
  [string]$Version,
  [string]$FileName,
- [bool]$PreRelease = $false,
+ [string]$PreRelease = 'false',
  [string]$Verbose = "None"
 )
 try
@@ -24,6 +24,8 @@ try
  {
   $Name = $Version
  }
+ 
+ [bool]$PreRelease = [System.Convert]::ToBoolean($PreRelease)
 
  if ($verbose.ToLower() -eq 'verbose')
  {

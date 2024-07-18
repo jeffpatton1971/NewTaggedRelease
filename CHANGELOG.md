@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[0.0.3.2]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.3.2) - 2024-07-18
+
+BUGFIX: Still struggling with booleans, rule of thumb just use strings. Handle the conversion in the script so we can use booleans there.
+
+What Changed:
+
+- Changed PreRelease to a string in `action.yml`
+- Changed PreRelease to a string in `newtaggedrelease.ps1`
+  - Added logic to convert that value to a boolean
+
+---
+
 ## [[0.0.3.1]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.3.1) - 2024-07-18
 
 BUGFIX: Quote string parameters and boolean, as well as cast that string to bool.

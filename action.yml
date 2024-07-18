@@ -22,8 +22,8 @@ inputs:
   prerelease:
     description: 'Mark this as a pre-release'
     required: false
-    type: bool
-    default: false
+    type: string
+    default: 'false'
   verbose:
     description: "A value of verbose will output additional information"
     required: false
@@ -41,5 +41,5 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         VERBOSE: ${{ inputs.verbose }}
       run: |
-        & $env:GITHUB_ACTION_PATH\\newtaggedrelease.ps1 -Name '${{ inputs.name }}' -Version '${{ inputs.version }}' -FileName '${{ inputs.filename }}' -PreRelease [bool]'${{ inputs.prerelease }}' -Verbose '${{ inputs.verbose }}'
+        & $env:GITHUB_ACTION_PATH\\newtaggedrelease.ps1 -Name '${{ inputs.name }}' -Version '${{ inputs.version }}' -FileName '${{ inputs.filename }}' -PreRelease '${{ inputs.prerelease }}' -Verbose '${{ inputs.verbose }}'
       shell: pwsh

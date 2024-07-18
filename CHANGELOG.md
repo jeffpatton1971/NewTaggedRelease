@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[0.0.2.15]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.15) - 2024-07-18
+
+BUGFIX: Body should be a required parameter
+
+---
+
 ## [[0.0.2.14]](https://github.com/mod-posh/NewTaggedRelease/releases/tag/v0.0.2.14) - 2024-01-17
 
 BUGFIX: Invalid json string, trailing quotes after boolean's

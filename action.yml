@@ -17,7 +17,7 @@ inputs:
     type: string
   body:
     description: 'The body of the release'
-    required: false
+    required: true
     type: string
   prerelease:
     description: 'Mark this as a pre-prerelease'
@@ -41,9 +41,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
